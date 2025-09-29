@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection =  transform.forward * moveInput.y;
 
         // Apply the movement using the CharacterController.
-        characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
+        characterController.Move(moveSpeed * Time.deltaTime * moveDirection);
 
         // Apply gravity to the player's vertical velocity.
         playerVelocity.y += gravityValue * Time.deltaTime;
