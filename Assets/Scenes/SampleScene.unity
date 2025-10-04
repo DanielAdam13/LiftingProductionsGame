@@ -872,7 +872,7 @@ Transform:
   m_GameObject: {fileID: 727608106}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.155, y: 0, z: 0}
+  m_LocalPosition: {x: -1.28, y: 0, z: 0.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1604,11 +1604,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9307589892e7cc84886a9f09efadfe87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSensitivity: 0.2
+  cameraSensitivity: 0.15
   cameraClampRangeX: {x: -90, y: 60}
-  cameraClampRangeY: {x: -120, y: 120}
+  cameraClampRangeY: {x: -100, y: 100}
   playerRoot: {fileID: 727608111}
   rotationActionReference: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  playerBehaviourManagerReference: {fileID: 727608107}
 --- !u!114 &1799727593
 MonoBehaviour:
   m_ObjectHideFlags: 0

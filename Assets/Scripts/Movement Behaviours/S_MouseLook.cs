@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class MouseLook : MonoBehaviour
@@ -9,39 +8,44 @@ public class MouseLook : MonoBehaviour
     [SerializeField]
     private float cameraSensitivity = 0.2f;
     [SerializeField]
-    public Vector2 cameraClampRangeX = new(-90f, 60f);
+    private Vector2 cameraClampRangeX = new(-90f, 60f); // vertical
     [SerializeField]
-    private Vector2 cameraClampRangeY = new(-120f, 120f);
+    private Vector2 cameraClampRangeY = new(-120f, 120f); // horizontal
 
     [Header("Player Root")]
     [SerializeField]
     private Transform playerRoot;
 
-    [Header("Input Action Reference")]
     [Tooltip("Reference to the Move action from the Input Actions asset.")]
-    public InputActionReference rotationActionReference;
+    [Header("Input Action Reference")]
+    [SerializeField]
+    private InputActionReference rotationActionReference;
+
+    [Header("Script Reference")]
+    [SerializeField]
+    private PlayerBehaviourManager playerBehaviourManagerReference;
 
     // Non-assignable variables
     private Vector2 rotationInput;
     private float xRotation = 0f;
     private float yRotation = 0f;
 
-    void Start()
+    private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         rotationActionReference.action.Enable();
     }
-    void OnDisable()
+
+    private void OnDisable()
     {
         rotationActionReference.action.Disable();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         rotationInput = rotationActionReference.action.ReadValue<Vector2>() * cameraSensitivity;
 
@@ -49,8 +53,10 @@ public class MouseLook : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, cameraClampRangeX.x, cameraClampRangeX.y);
 
         yRotation += rotationInput.x;
-        yRotation = Mathf.Clamp(yRotation, cameraClampRangeY.x, cameraClampRangeY.y);
-
+        if (playerBehaviourManagerReference.IsDrivingForklift())
+        {
+            yRotation = Mathf.Clamp(yRotation, cameraClampRangeY.x, cameraClampRangeY.y);
+        }
 
         // UP/DOWN - rotate camera 
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);

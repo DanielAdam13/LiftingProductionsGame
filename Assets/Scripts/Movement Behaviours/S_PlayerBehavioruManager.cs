@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public enum PlayerState
 {
@@ -10,7 +10,7 @@ public enum PlayerState
 
 public class PlayerBehaviourManager : MonoBehaviour
 {
-    [Tooltip("Reference to the Controller scripts from Forklift and Player.")]
+    [Tooltip("Reference to the Controller scripts for Forklift and Player.")]
     [Header("Script References")]
     [SerializeField]
     ForkliftController forkliftControllerReference;
@@ -19,7 +19,7 @@ public class PlayerBehaviourManager : MonoBehaviour
 
     [Space(5)]
     [SerializeField]
-    private BoxCollider mountRangeCollider;
+    private CapsuleCollider mountRangeCollider;
 
     [Tooltip("Reference to the Mount action from the Input Actions asset.")]
     [Header("Input Action Reference")]
@@ -27,8 +27,7 @@ public class PlayerBehaviourManager : MonoBehaviour
     private InputActionReference mountActionReference;
 
     // Non-assignable variables
-    PlayerState currentState;
-    private Vector3 relativeEntryPosition;
+    private PlayerState currentState;
 
     private void Start()
     {
@@ -41,14 +40,12 @@ public class PlayerBehaviourManager : MonoBehaviour
     {
         if (mountActionReference.action.triggered)
         {
+            Debug.Log("Pressed F");
             switch (currentState)
             {
                 case PlayerState.Walking: // Entering forklift
                     if (IsInMountRange())
                     {
-                        relativeEntryPosition = forkliftControllerReference.transform.InverseTransformPoint(walkingControllerReference.transform.position);
-                        Debug.Log("ENTRY  " + relativeEntryPosition);
-
                         currentState = PlayerState.DrivingForklift;
                         walkingControllerReference.enabled = false;
                         forkliftControllerReference.enabled = true;
@@ -57,16 +54,14 @@ public class PlayerBehaviourManager : MonoBehaviour
                     }
                     break;
                 case PlayerState.DrivingForklift: // Leaving forklift
+
                     currentState = PlayerState.Walking;
-
                     forkliftControllerReference.enabled = false;
-
-                    walkingControllerReference.transform.position = forkliftControllerReference.transform.TransformPoint(relativeEntryPosition);
                     walkingControllerReference.enabled = true;
 
-                    
+                    walkingControllerReference.TeleportPlayer(new Vector3(forkliftControllerReference.transform.position.x,
+                        0f, forkliftControllerReference.transform.position.z) - (forkliftControllerReference.transform.right * 2.5f));
 
-                    //Debug.Log("Switched to Walking state");
                     break;
             }
         }
@@ -75,5 +70,10 @@ public class PlayerBehaviourManager : MonoBehaviour
     private bool IsInMountRange()
     {
         return mountRangeCollider.bounds.Contains(transform.position);
+    }
+
+    public bool IsDrivingForklift()
+    {
+        return currentState == PlayerState.DrivingForklift;
     }
 }
