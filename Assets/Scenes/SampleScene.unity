@@ -820,7 +820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forkliftControllerReference: {fileID: 954579081}
   walkingControllerReference: {fileID: 727608108}
-  mountRangeCollider: {fileID: 954579083}
+  mountRangeCollider: {fileID: 954579084}
   mountActionReference: {fileID: -4033907508841856163, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!114 &727608108
 MonoBehaviour:
@@ -1024,9 +1024,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 954579080}
-  - component: {fileID: 954579082}
   - component: {fileID: 954579081}
+  - component: {fileID: 954579084}
   - component: {fileID: 954579083}
+  - component: {fileID: 954579085}
   m_Layer: 0
   m_Name: Forklift
   m_TagString: Untagged
@@ -1066,8 +1067,8 @@ MonoBehaviour:
   forkliftMoveSpeed: 5
   forkliftRotationSpeed: 15
   forkliftMoveActionReference: {fileID: 8480502655200404685, guid: 052faaac586de48259a63d0c4782560b, type: 3}
---- !u!143 &954579082
-CharacterController:
+--- !u!65 &954579083
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1081,18 +1082,14 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 2.2
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 1.35}
---- !u!65 &954579083
-BoxCollider:
+  m_Size: {x: 3, y: 2, z: 4.5}
+  m_Center: {x: 0, y: -0.7594842, z: 1.25}
+--- !u!136 &954579084
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1109,9 +1106,38 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 7, y: 2, z: 7}
-  m_Center: {x: 0, y: -0.7594842, z: 1.6378257}
+  serializedVersion: 2
+  m_Radius: 4
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0.5}
+--- !u!54 &954579085
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954579079}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1174960145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,7 +1748,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2042059753}
-  - component: {fileID: 2042059754}
   m_Layer: 0
   m_Name: Fork
   m_TagString: Untagged
@@ -1746,27 +1771,6 @@ Transform:
   - {fileID: 912962629}
   m_Father: {fileID: 954579080}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2042059754
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042059752}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3.105683, y: 2.1716099, z: 1.9408119}
-  m_Center: {x: -0.17934859, y: 0.585805, z: 0.47040594}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
