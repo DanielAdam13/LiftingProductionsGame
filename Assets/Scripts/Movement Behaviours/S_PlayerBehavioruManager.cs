@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -28,19 +29,21 @@ public class PlayerBehaviourManager : MonoBehaviour
 
     // Non-assignable variables
     private PlayerState currentState;
-
+    private bool allowedSwitch;
+    
     private void Start()
     {
         currentState = PlayerState.Walking;
         //walkingControllerReference.enabled = true;
         forkliftControllerReference.enabled = false;
+
+        allowedSwitch = true;
     }
 
     private void Update()
     {
-        if (mountActionReference.action.triggered)
+        if (mountActionReference.action.triggered && allowedSwitch)
         {
-            Debug.Log("Pressed F");
             switch (currentState)
             {
                 case PlayerState.Walking: // Entering forklift
@@ -49,8 +52,6 @@ public class PlayerBehaviourManager : MonoBehaviour
                         currentState = PlayerState.DrivingForklift;
                         walkingControllerReference.enabled = false;
                         forkliftControllerReference.enabled = true;
-
-                        //Debug.Log("Switched to DrivingForklift state");
                     }
                     break;
                 case PlayerState.DrivingForklift: // Leaving forklift
@@ -67,13 +68,18 @@ public class PlayerBehaviourManager : MonoBehaviour
         }
     }
 
-    private bool IsInMountRange()
+    public bool IsInMountRange()
     {
         return mountRangeCollider.bounds.Contains(transform.position);
     }
 
-    public bool IsDrivingForklift()
+    public PlayerState GetCurrentState()
     {
-        return currentState == PlayerState.DrivingForklift;
+        return currentState;
+    }
+
+    public void AllowOrDisallowSwitching()
+    {
+        allowedSwitch = !allowedSwitch;
     }
 }

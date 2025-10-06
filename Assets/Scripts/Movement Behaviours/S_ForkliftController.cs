@@ -15,10 +15,13 @@ public class ForkliftController : MonoBehaviour
     [SerializeField]
     private InputActionReference forkliftMoveActionReference;
 
+    // Non-assignable variables
     private Vector2 moveInput;
+    private bool forkliftControllerLocked;
 
-    private void Awake()
+    private void Start()
     {
+        forkliftControllerLocked = false;
     }
 
     private void OnEnable()
@@ -32,14 +35,21 @@ public class ForkliftController : MonoBehaviour
 
     void Update()
     {
-        moveInput = forkliftMoveActionReference.action.ReadValue<Vector2>();
+        if (!forkliftControllerLocked)
+        {
+            moveInput = forkliftMoveActionReference.action.ReadValue<Vector2>();
 
-        // Rotate the player based on horizontal input.
-        transform.Rotate(0, moveInput.x * forkliftRotationSpeed * Time.deltaTime, 0);
+            // Rotate the player based on horizontal input.
+            transform.Rotate(0, moveInput.x * forkliftRotationSpeed * Time.deltaTime, 0);
 
-        // moveDirection is based on camera direction
-        Vector3 moveDirection = transform.forward * moveInput.y;
+            // moveDirection is based on camera direction
+            Vector3 moveDirection = transform.forward * moveInput.y;
 
-        transform.position += forkliftMoveSpeed * Time.deltaTime * moveDirection;
+            transform.position += forkliftMoveSpeed * Time.deltaTime * moveDirection;
+        }
+    }
+    public void LockOrUnlockForklift()
+    {
+        forkliftControllerLocked = !forkliftControllerLocked;
     }
 }
