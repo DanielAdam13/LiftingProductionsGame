@@ -22,10 +22,16 @@ public class WalkingController : MonoBehaviour
     // Non-assignable variables
     private CharacterController characterController;
     private Vector2 moveInput;
+    private bool playerLocked;
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+    }
+
+    private void Start()
+    {
+        playerLocked = false;
     }
 
     private void OnEnable()
@@ -47,7 +53,6 @@ public class WalkingController : MonoBehaviour
             characterController.enabled = false; // Disable to prevent physics issues while parented
 
             transform.localPosition = new Vector3(-0.1f, -0.2f, 0); // Set local position relative to forklift
-
         }
         else
         {
@@ -59,19 +64,22 @@ public class WalkingController : MonoBehaviour
 
     private void Update()
     {
-        moveInput = playerMoveActionReference.action.ReadValue<Vector2>();
+        if (!playerLocked)
+        {
+            moveInput = playerMoveActionReference.action.ReadValue<Vector2>();
 
-        Vector3 camForward = cameraTransform.forward;
-        Vector3 camRight = cameraTransform.right;
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
+            Vector3 camForward = cameraTransform.forward;
+            Vector3 camRight = cameraTransform.right;
+            camForward.y = 0f;
+            camRight.y = 0f;
+            camForward.Normalize();
+            camRight.Normalize();
 
-        Vector3 desiredMove = camForward * moveInput.y + camRight * moveInput.x;
-        desiredMove = desiredMove.normalized;
+            Vector3 desiredMove = camForward * moveInput.y + camRight * moveInput.x;
+            desiredMove = desiredMove.normalized;
 
-        characterController.Move(walkingMoveSpeed * Time.deltaTime * desiredMove);
+            characterController.Move(walkingMoveSpeed * Time.deltaTime * desiredMove);
+        }
     }
 
     public void TeleportPlayer(Vector3 pos)
@@ -80,5 +88,9 @@ public class WalkingController : MonoBehaviour
         characterController.enabled = false;
         transform.position = pos;
         characterController.enabled = true;
+    }
+    public void LockOrUnlockPlayer()
+    {
+        playerLocked = !playerLocked;
     }
 }

@@ -30,6 +30,8 @@ public class MouseLook : MonoBehaviour
     private float xRotation = 0f;
     private float yRotation = 0f;
 
+    private bool cameraLookingLocked;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -47,25 +49,29 @@ public class MouseLook : MonoBehaviour
 
     private void Update()
     {
-        rotationInput = rotationActionReference.action.ReadValue<Vector2>() * cameraSensitivity;
-
-        xRotation -= rotationInput.y;
-        xRotation = Mathf.Clamp(xRotation, cameraClampRangeX.x, cameraClampRangeX.y);
-
-        yRotation += rotationInput.x;
-        if (playerBehaviourManagerReference.IsDrivingForklift())
+        if (!cameraLookingLocked)
         {
-            yRotation = Mathf.Clamp(yRotation, cameraClampRangeY.x, cameraClampRangeY.y);
+            rotationInput = rotationActionReference.action.ReadValue<Vector2>() * cameraSensitivity;
+
+            xRotation -= rotationInput.y;
+            xRotation = Mathf.Clamp(xRotation, cameraClampRangeX.x, cameraClampRangeX.y);
+
+            yRotation += rotationInput.x;
+            if (playerBehaviourManagerReference.GetCurrentState() == PlayerState.DrivingForklift)
+            {
+                yRotation = Mathf.Clamp(yRotation, cameraClampRangeY.x, cameraClampRangeY.y);
+            }
+
+            // UP/DOWN - rotate camera 
+            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            // LEFT/RIGHT - rotate player root
+            playerRoot.localRotation = Quaternion.Euler(0f, yRotation, 0f);
         }
 
-        // UP/DOWN - rotate camera 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        // LEFT/RIGHT - rotate player root
-        playerRoot.localRotation = Quaternion.Euler(0f, yRotation, 0f);
     }
 
-    private void LockAndUnlockCursor()
+    public void LockOrUnlockCamera()
     {
-        // pause, interactions with screens?
+        cameraLookingLocked = !cameraLookingLocked;
     }
 }
