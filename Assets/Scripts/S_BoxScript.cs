@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class S_BoxScript : MonoBehaviour
 {
@@ -25,6 +26,15 @@ public class S_BoxScript : MonoBehaviour
 
     public void detachBox()
     {
+        this.gameObject.transform.SetParent(null);
+        RaycastHit hit;
 
+        float maxDistance = 10.0f;
+
+        if (Physics.Raycast(this.gameObject.transform.position, Vector3.down, out hit, maxDistance))
+        {
+            // Move object to the hit point
+            transform.position = hit.point;
+        }
     }
 }
