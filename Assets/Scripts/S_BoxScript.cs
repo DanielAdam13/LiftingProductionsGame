@@ -20,13 +20,20 @@ public class S_BoxScript : MonoBehaviour
     {
         Vector3 pos = transform.localPosition;
         pos.y += 0.5f + 1 * nr;
+        
         this.gameObject.transform.SetLocalPositionAndRotation(pos, Quaternion.identity);
-        transform.parent = forks.transform;
+        this.gameObject.transform.parent = forks.transform;
+       
+
     }
 
     public void detachBox()
     {
+        this.gameObject.transform.rotation = this.gameObject.transform.parent.parent.rotation;
+
+
         this.gameObject.transform.SetParent(null);
+        
         RaycastHit hit;
 
         float maxDistance = 10.0f;
@@ -34,7 +41,10 @@ public class S_BoxScript : MonoBehaviour
         if (Physics.Raycast(this.gameObject.transform.position, Vector3.down, out hit, maxDistance))
         {
             // Move object to the hit point
-            transform.position = hit.point;
+            Vector3 pos;
+            pos = Vector3.zero;
+            pos.y = this.transform.localScale.y;
+            transform.position = hit.point + pos;
         }
     }
 }

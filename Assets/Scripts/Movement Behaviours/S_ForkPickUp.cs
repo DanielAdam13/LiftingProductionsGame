@@ -1,27 +1,67 @@
 //using System.Numerics;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class S_ForkPickUp : MonoBehaviour
 {
     List<GameObject> stackedBoxes = new();
-    //bool hasBox = false;
-    private void OnTriggerEnter(Collider other)
+
+    private float startY;
+
+    [Header("Fork Movement Settings")]
+    [SerializeField]
+    private float forkMoveSpeed = 2f;
+    [SerializeField]
+    private float forkMaxHeight = 3f;
+
+    private void Awake()
     {
-        if (other.CompareTag("Pallet"))
+        startY = transform.localPosition.y;
+    }
+
+    private void Update()
+    {
+        if (stackedBoxes.Count > 0 && transform.localPosition.y == startY)
         {
-            int nr = stackedBoxes.Count;
-            other.gameObject.GetComponent<S_BoxScript>().attachBox(this.gameObject, nr);
-            stackedBoxes.Add(other.gameObject);         
+            DropBoxes();
         }
     }
 
-    public void DropBoxes()
+    private void DropBoxes()
     {
         for (int i = stackedBoxes.Count - 1; i >= 0; i--)
         {
             stackedBoxes[i].GetComponent<S_BoxScript>().detachBox();
             stackedBoxes.RemoveAt(i);
+        }
+    }
+
+    public void MoveVerticalMovement(bool up)
+    {
+        float moveSpeed;
+
+        if (up) {
+            moveSpeed = forkMoveSpeed;
+        } else
+        {
+            moveSpeed = -forkMoveSpeed;
+        }
+
+        Vector3 pos = transform.localPosition;
+        pos.y += moveSpeed * Time.deltaTime * 2;
+        pos.y = Mathf.Clamp(pos.y, startY, startY + forkMaxHeight);
+        transform.localPosition = pos;
+    }
+
+    public void TriggerEffect(Collider other)
+    {
+        if (other.CompareTag("Pallet"))
+        {
+            Debug.Log("enter trigger");
+            int nr = stackedBoxes.Count;
+            other.gameObject.GetComponent<S_BoxScript>().attachBox(this.gameObject, nr);
+            stackedBoxes.Add(other.gameObject);
         }
     }
 }

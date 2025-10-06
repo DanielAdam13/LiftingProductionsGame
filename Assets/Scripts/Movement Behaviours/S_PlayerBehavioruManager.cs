@@ -25,6 +25,9 @@ public class PlayerBehaviourManager : MonoBehaviour
     [Header("Input Action Reference")]
     [SerializeField]
     private InputActionReference mountActionReference;
+    [Tooltip("Reference to the Fork movement action from the Input Actions asset.")]
+    [SerializeField]
+    private InputActionReference forkActionReference;
 
     // Non-assignable variables
     private PlayerState currentState;
@@ -65,6 +68,19 @@ public class PlayerBehaviourManager : MonoBehaviour
                     break;
             }
         }
+        if (forkActionReference.action.IsPressed() && currentState == PlayerState.DrivingForklift)
+        {
+            bool keyPressed = forkActionReference.action.ReadValue<float>() > 0;
+            if (keyPressed)
+            {
+                //Debug.Log("Released P");
+                forkliftControllerReference.GetFork().GetComponent<S_ForkPickUp>().MoveVerticalMovement(keyPressed);
+            } else
+            {
+                //Debug.Log("Released O");
+                forkliftControllerReference.GetFork().GetComponent<S_ForkPickUp>().MoveVerticalMovement(keyPressed);
+            }
+        }
     }
 
     private bool IsInMountRange()
@@ -76,4 +92,6 @@ public class PlayerBehaviourManager : MonoBehaviour
     {
         return currentState == PlayerState.DrivingForklift;
     }
+
+
 }

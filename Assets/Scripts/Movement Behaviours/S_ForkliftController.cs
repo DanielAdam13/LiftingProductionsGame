@@ -15,10 +15,21 @@ public class ForkliftController : MonoBehaviour
     [SerializeField]
     private InputActionReference forkliftMoveActionReference;
 
+    private GameObject Fork;
+
     private Vector2 moveInput;
 
     private void Awake()
     {
+        Fork = transform.Find("Fork").gameObject;
+        if (Fork == null)
+        {
+            Debug.LogError("Fork object not found as a child of the forklift.");
+        }
+        else
+        {
+            Debug.Log("Fork object found: " + Fork.name);
+        }
     }
 
     private void OnEnable()
@@ -28,6 +39,11 @@ public class ForkliftController : MonoBehaviour
     private void OnDisable()
     {
         forkliftMoveActionReference.action.Disable();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GetFork().GetComponent<S_ForkPickUp>().TriggerEffect(other);
     }
 
     void Update()
@@ -42,4 +58,5 @@ public class ForkliftController : MonoBehaviour
 
         transform.position += forkliftMoveSpeed * Time.deltaTime * moveDirection;
     }
+    public ref GameObject GetFork() { return ref Fork; }
 }
