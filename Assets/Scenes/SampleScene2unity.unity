@@ -1173,7 +1173,7 @@ GameObject:
   - component: {fileID: 912962629}
   - component: {fileID: 912962631}
   - component: {fileID: 912962630}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: Fork_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2443,7 +2443,7 @@ GameObject:
   - component: {fileID: 1867651575}
   - component: {fileID: 1867651574}
   - component: {fileID: 1867651573}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2550,7 +2550,7 @@ GameObject:
   - component: {fileID: 2042059753}
   - component: {fileID: 2042059755}
   - component: {fileID: 2042059756}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: Fork
   m_TagString: Untagged
   m_Icon: {fileID: 0}
