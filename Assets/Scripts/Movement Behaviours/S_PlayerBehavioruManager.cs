@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -21,6 +22,9 @@ public class PlayerBehaviourManager : MonoBehaviour
     [Space(5)]
     [SerializeField]
     private CapsuleCollider mountRangeCollider;
+    [SerializeField]
+    [Tooltip("UI gameObject fro invalid exit")]
+    private GameObject UI_invalidExitMessage;
 
     [Tooltip("Reference to the Mount action from the Input Actions asset.")]
     [Header("Input Action Reference")]
@@ -30,6 +34,8 @@ public class PlayerBehaviourManager : MonoBehaviour
     // Non-assignable variables
     private PlayerState currentState;
     private bool allowedSwitch;
+    private Vector3 dismountDirection;
+    private Vector3 exitPostion;
     
     private void Start()
     {
@@ -42,6 +48,7 @@ public class PlayerBehaviourManager : MonoBehaviour
 
     private void Update()
     {
+        Debug.DrawLine(forkliftControllerReference.transform.position, forkliftControllerReference.transform.position + dismountDirection * 10f, Color.green);
         if (mountActionReference.action.triggered && allowedSwitch)
         {
             switch (currentState)
@@ -55,13 +62,41 @@ public class PlayerBehaviourManager : MonoBehaviour
                     }
                     break;
                 case PlayerState.DrivingForklift: // Leaving forklift
+                    exitPostion = Vector3.zero;
+
+                    
+
+                    dismountDirection = forkliftControllerReference.transform.right;
+
+                    bool validLeft = ValidateDismountDirection(-forkliftControllerReference.transform.right);
+                    bool validRight = ValidateDismountDirection(forkliftControllerReference.transform.right);
+
+                    if (!validLeft && !validRight)
+                    {
+                        Debug.Log("Blocked on both sides!");
+
+                        UI_invalidExitMessage.SetActive(true);
+                        Invoke(nameof(DisableObject), 1.5f);
+
+                        break;
+                    }
+                    else if (validLeft && !validRight)
+                    {
+                        dismountDirection = -forkliftControllerReference.transform.right;
+                    }
+                    else if (validRight && !validLeft)
+                    {
+                        
+                    }
+
+                    exitPostion = new Vector3(forkliftControllerReference.transform.position.x,
+                        0f, forkliftControllerReference.transform.position.z) + (dismountDirection * 2.5f);
+
+                    walkingControllerReference.TeleportPlayer(exitPostion);
 
                     currentState = PlayerState.Walking;
                     forkliftControllerReference.enabled = false;
                     walkingControllerReference.enabled = true;
-
-                    walkingControllerReference.TeleportPlayer(new Vector3(forkliftControllerReference.transform.position.x,
-                        0f, forkliftControllerReference.transform.position.z) - (forkliftControllerReference.transform.right * 2.5f));
 
                     break;
             }
@@ -81,5 +116,22 @@ public class PlayerBehaviourManager : MonoBehaviour
     public void AllowOrDisallowSwitching()
     {
         allowedSwitch = !allowedSwitch;
+    }
+
+    private bool ValidateDismountDirection(Vector3 checkDirection)
+    {
+        bool hitSomething = Physics.Raycast(forkliftControllerReference.transform.position, checkDirection, out RaycastHit hit, 3f);
+
+        if (hitSomething)
+        {
+            //Debug.Log("Status: " + !hit.collider.CompareTag("Static Level Mesh"));
+            return !hit.collider.CompareTag("Static Level Mesh");
+        }
+        return true;
+    }
+
+    private void DisableObject()
+    {
+        UI_invalidExitMessage.SetActive(false);
     }
 }
