@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
@@ -41,16 +40,11 @@ public class UIManager : MonoBehaviour
             { 
                 UI_mountText.SetActive(false);
             }
-
-            // screen script activation/deactivation
         }
         else
         {
             Cursor.lockState = CursorLockMode.None;
-
             UI_mountText.SetActive(false);
-
-            // screen script activation/deactivation
         }
 
         UI_pauseMenu.SetActive(isPaused);

@@ -39,7 +39,6 @@ public class GameStateManager : MonoBehaviour
             LockOrUnlockPlayerActions();
         }
     }
-
     private void LockOrUnlockPlayerActions()
     {
         walkingController.LockOrUnlockPlayer();

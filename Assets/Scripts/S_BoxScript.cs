@@ -1,20 +1,7 @@
 ﻿using UnityEngine;
-using static UnityEngine.UI.Image;
 
-public class S_BoxScript : MonoBehaviour
+public class BoxScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     // Int nr is what nuber the box is in the tower from botom to the top
     public void AttachBox( GameObject forks, int nr)
     {

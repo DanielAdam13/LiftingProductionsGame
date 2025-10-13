@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class ForkliftController : MonoBehaviour
@@ -28,10 +27,6 @@ public class ForkliftController : MonoBehaviour
         {
             Debug.LogError("Fork object not found as a child of the forklift.");
         }
-        else
-        {
-            Debug.Log("Fork object found: " + Fork.name);
-        }
     }
     private void Start()
     {
@@ -49,7 +44,7 @@ public class ForkliftController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GetFork().GetComponent<S_ForkPickUp>().TriggerEffect(other);
+        GetFork().GetComponent<ForkPickUp>().TriggerEffect(other);
     }
 
     void Update()

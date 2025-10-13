@@ -111,11 +111,11 @@ public class PlayerBehaviourManager : MonoBehaviour
             if (keyPressed)
             {
                 //Debug.Log("Released P");
-                forkliftControllerReference.GetFork().GetComponent<S_ForkPickUp>().MoveVerticalMovement(keyPressed);
+                forkliftControllerReference.GetFork().GetComponent<ForkPickUp>().MoveVerticalMovement(keyPressed);
             } else
             {
                 //Debug.Log("Released O");
-                forkliftControllerReference.GetFork().GetComponent<S_ForkPickUp>().MoveVerticalMovement(keyPressed);
+                forkliftControllerReference.GetFork().GetComponent<ForkPickUp>().MoveVerticalMovement(keyPressed);
             }
         }
     }

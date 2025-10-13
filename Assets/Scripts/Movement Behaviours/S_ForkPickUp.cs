@@ -1,19 +1,18 @@
 //using System.Numerics;
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
-public class S_ForkPickUp : MonoBehaviour
+public class ForkPickUp : MonoBehaviour
 {
-    List<GameObject> stackedBoxes = new();
-
-    private float startY;
-
     [Header("Fork Movement Settings")]
     [SerializeField]
     private float forkMoveSpeed = 2f;
     [SerializeField]
     private float forkMaxHeight = 3f;
+
+    // Non-assignable variables
+    private readonly List<GameObject> stackedBoxes = new();
+    private float startY;
 
     private void Awake()
     {
@@ -32,7 +31,7 @@ public class S_ForkPickUp : MonoBehaviour
     {
         for (int i = stackedBoxes.Count - 1; i >= 0; i--)
         {
-            stackedBoxes[i].GetComponent<S_BoxScript>().DetachBox();
+            stackedBoxes[i].GetComponent<BoxScript>().DetachBox();
             stackedBoxes.RemoveAt(i);
         }
     }
@@ -61,7 +60,7 @@ public class S_ForkPickUp : MonoBehaviour
         {
             //Debug.Log("enter trigger");
             int nr = stackedBoxes.Count;
-            other.gameObject.GetComponent<S_BoxScript>().AttachBox(this.gameObject, nr);
+            other.gameObject.GetComponent<BoxScript>().AttachBox(this.gameObject, nr);
             stackedBoxes.Add(other.gameObject);
             Debug.Log("stacked boxes: " + stackedBoxes.Count);
         }
