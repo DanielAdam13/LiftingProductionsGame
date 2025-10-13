@@ -32,7 +32,7 @@ public class S_ForkPickUp : MonoBehaviour
     {
         for (int i = stackedBoxes.Count - 1; i >= 0; i--)
         {
-            stackedBoxes[i].GetComponent<S_BoxScript>().detachBox();
+            stackedBoxes[i].GetComponent<S_BoxScript>().DetachBox();
             stackedBoxes.RemoveAt(i);
         }
     }
@@ -56,12 +56,14 @@ public class S_ForkPickUp : MonoBehaviour
 
     public void TriggerEffect(Collider other)
     {
+        //Debug.Log("triggered");
         if (other.CompareTag("Pallet") && transform.localPosition.y > startY + 0.1f && transform.localPosition.y < startY + 0.8f)
         {
-            Debug.Log("enter trigger");
+            //Debug.Log("enter trigger");
             int nr = stackedBoxes.Count;
-            other.gameObject.GetComponent<S_BoxScript>().attachBox(this.gameObject, nr);
+            other.gameObject.GetComponent<S_BoxScript>().AttachBox(this.gameObject, nr);
             stackedBoxes.Add(other.gameObject);
+            Debug.Log("stacked boxes: " + stackedBoxes.Count);
         }
     }
 }

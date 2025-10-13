@@ -151,7 +151,6 @@ GameObject:
   - component: {fileID: 7886486867597491009}
   - component: {fileID: 3414313237225129251}
   - component: {fileID: 6254255742749034909}
-  - component: {fileID: 6232166280638838041}
   m_Layer: 0
   m_Name: Pallet&Box
   m_TagString: Pallet
@@ -250,15 +249,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6232166280638838041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5182300941370854687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e88b09e29d5f0343aa4a8e3d1cd2423, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
