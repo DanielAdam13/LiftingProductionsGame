@@ -1130,6 +1130,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ForkMovement"",
+                    ""type"": ""Value"",
+                    ""id"": ""a50e4316-f1d5-4ac0-9de9-c6f302e474b5"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -1242,6 +1251,39 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Mount"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""834f8020-7b25-4e83-9d71-db00f1d4d757"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ForkMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""23012aa0-2b9e-484f-a8aa-a52ff93bb7ee"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ForkMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""edda0580-86b9-4ea9-936a-ef728c318dd8"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ForkMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -1337,6 +1379,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Forklift = asset.FindActionMap("Forklift", throwIfNotFound: true);
         m_Forklift_Move = m_Forklift.FindAction("Move", throwIfNotFound: true);
         m_Forklift_Mount = m_Forklift.FindAction("Mount", throwIfNotFound: true);
+        m_Forklift_ForkMovement = m_Forklift.FindAction("ForkMovement", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -1811,6 +1854,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IForkliftActions> m_ForkliftActionsCallbackInterfaces = new List<IForkliftActions>();
     private readonly InputAction m_Forklift_Move;
     private readonly InputAction m_Forklift_Mount;
+    private readonly InputAction m_Forklift_ForkMovement;
     /// <summary>
     /// Provides access to input actions defined in input action map "Forklift".
     /// </summary>
@@ -1830,6 +1874,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Forklift/Mount".
         /// </summary>
         public InputAction @Mount => m_Wrapper.m_Forklift_Mount;
+        /// <summary>
+        /// Provides access to the underlying input action "Forklift/ForkMovement".
+        /// </summary>
+        public InputAction @ForkMovement => m_Wrapper.m_Forklift_ForkMovement;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1862,6 +1910,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Mount.started += instance.OnMount;
             @Mount.performed += instance.OnMount;
             @Mount.canceled += instance.OnMount;
+            @ForkMovement.started += instance.OnForkMovement;
+            @ForkMovement.performed += instance.OnForkMovement;
+            @ForkMovement.canceled += instance.OnForkMovement;
         }
 
         /// <summary>
@@ -1879,6 +1930,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Mount.started -= instance.OnMount;
             @Mount.performed -= instance.OnMount;
             @Mount.canceled -= instance.OnMount;
+            @ForkMovement.started -= instance.OnForkMovement;
+            @ForkMovement.performed -= instance.OnForkMovement;
+            @ForkMovement.canceled -= instance.OnForkMovement;
         }
 
         /// <summary>
@@ -2154,5 +2208,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMount(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ForkMovement" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnForkMovement(InputAction.CallbackContext context);
     }
 }

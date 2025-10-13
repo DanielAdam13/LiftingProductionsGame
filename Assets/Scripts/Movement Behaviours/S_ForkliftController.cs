@@ -15,13 +15,21 @@ public class ForkliftController : MonoBehaviour
     [SerializeField]
     private InputActionReference forkliftMoveActionReference;
 
-    // Non-assignable variables
-    private Vector2 moveInput;
-    private bool forkliftControllerLocked;
+    private GameObject Fork;
 
-    private void Start()
+    private Vector2 moveInput;
+
+    private void Awake()
     {
-        forkliftControllerLocked = false;
+        Fork = transform.Find("Fork").gameObject;
+        if (Fork == null)
+        {
+            Debug.LogError("Fork object not found as a child of the forklift.");
+        }
+        else
+        {
+            Debug.Log("Fork object found: " + Fork.name);
+        }
     }
 
     private void OnEnable()
@@ -33,23 +41,22 @@ public class ForkliftController : MonoBehaviour
         forkliftMoveActionReference.action.Disable();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        GetFork().GetComponent<S_ForkPickUp>().TriggerEffect(other);
+    }
+
     void Update()
     {
-        if (!forkliftControllerLocked)
-        {
-            moveInput = forkliftMoveActionReference.action.ReadValue<Vector2>();
+        moveInput = forkliftMoveActionReference.action.ReadValue<Vector2>();
 
-            // Rotate the player based on horizontal input.
-            transform.Rotate(0, moveInput.x * forkliftRotationSpeed * Time.deltaTime, 0);
+        // Rotate the player based on horizontal input.
+        transform.Rotate(0, moveInput.x * forkliftRotationSpeed * Time.deltaTime, 0);
 
-            // moveDirection is based on camera direction
-            Vector3 moveDirection = transform.forward * moveInput.y;
+        // moveDirection is based on camera direction
+        Vector3 moveDirection = transform.forward * moveInput.y;
 
-            transform.position += forkliftMoveSpeed * Time.deltaTime * moveDirection;
-        }
+        transform.position += forkliftMoveSpeed * Time.deltaTime * moveDirection;
     }
-    public void LockOrUnlockForklift()
-    {
-        forkliftControllerLocked = !forkliftControllerLocked;
-    }
+    public ref GameObject GetFork() { return ref Fork; }
 }

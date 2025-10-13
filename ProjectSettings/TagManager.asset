@@ -4,16 +4,17 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Pallet
   - LookRoot
   - Static Level Mesh
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Fork
   - Water
   - UI
-  - 
+  - Box
   - 
   - 
   - 

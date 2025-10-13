@@ -1044,6 +1044,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ForkMovement",
+                    "type": "Value",
+                    "id": "a50e4316-f1d5-4ac0-9de9-c6f302e474b5",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1156,6 +1165,39 @@
                     "action": "Mount",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "834f8020-7b25-4e83-9d71-db00f1d4d757",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ForkMovement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "23012aa0-2b9e-484f-a8aa-a52ff93bb7ee",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ForkMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "edda0580-86b9-4ea9-936a-ef728c318dd8",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ForkMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
