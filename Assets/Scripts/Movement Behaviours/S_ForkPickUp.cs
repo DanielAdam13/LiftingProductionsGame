@@ -56,7 +56,7 @@ public class S_ForkPickUp : MonoBehaviour
 
     public void TriggerEffect(Collider other)
     {
-        if (other.CompareTag("Pallet"))
+        if (other.CompareTag("Pallet") && transform.localPosition.y > startY + 0.1f && transform.localPosition.y < startY + 0.8f)
         {
             Debug.Log("enter trigger");
             int nr = stackedBoxes.Count;

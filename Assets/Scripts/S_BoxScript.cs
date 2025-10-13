@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using static UnityEngine.UI.Image;
 
 public class S_BoxScript : MonoBehaviour
@@ -19,32 +19,38 @@ public class S_BoxScript : MonoBehaviour
     public void attachBox( GameObject forks, int nr)
     {
         Vector3 pos = transform.localPosition;
-        pos.y += 0.5f + 1 * nr;
+        pos.y += 0.4f + 1 * nr;
         
-        this.gameObject.transform.SetLocalPositionAndRotation(pos, Quaternion.identity);
+        this.gameObject.transform.SetLocalPositionAndRotation(pos, this.gameObject.transform.localRotation);
         this.gameObject.transform.parent = forks.transform;
-       
-
     }
 
     public void detachBox()
     {
-        this.gameObject.transform.rotation = this.gameObject.transform.parent.parent.rotation;
+        if (this.gameObject.transform.parent != null && this.gameObject.transform.parent.parent != null)
+        {
+            //this.gameObject.transform.rotation = this.gameObject.transform.parent.parent.rotation;
+        }
 
+      
+        Transform visuals = this.transform.Find("Visuals");
+        float boxHeight = 0.5f; // A default height in case visuals aren't found
+        if (visuals != null)
+        {
+            boxHeight = visuals.lossyScale.y;
+        }
 
         this.gameObject.transform.SetParent(null);
-        
-        RaycastHit hit;
 
+        this.gameObject.transform.localScale = Vector3.one;
+
+        // --- Position the box on the ground ---
+        RaycastHit hit;
         float maxDistance = 10.0f;
 
         if (Physics.Raycast(this.gameObject.transform.position, Vector3.down, out hit, maxDistance))
         {
-            // Move object to the hit point
-            Vector3 pos;
-            pos = Vector3.zero;
-            pos.y = this.transform.localScale.y;
-            transform.position = hit.point + pos;
+            transform.position = hit.point + new Vector3(0, boxHeight / 2.0f, 0);
         }
     }
 }
