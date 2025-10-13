@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class ForkliftController : MonoBehaviour
@@ -15,9 +16,10 @@ public class ForkliftController : MonoBehaviour
     [SerializeField]
     private InputActionReference forkliftMoveActionReference;
 
+    // Non-assignable value
     private GameObject Fork;
-
     private Vector2 moveInput;
+    private bool forkliftControllerLocked;
 
     private void Awake()
     {
@@ -30,6 +32,10 @@ public class ForkliftController : MonoBehaviour
         {
             Debug.Log("Fork object found: " + Fork.name);
         }
+    }
+    private void Start()
+    {
+        forkliftControllerLocked = false;
     }
 
     private void OnEnable()
@@ -48,15 +54,24 @@ public class ForkliftController : MonoBehaviour
 
     void Update()
     {
-        moveInput = forkliftMoveActionReference.action.ReadValue<Vector2>();
+        if (!forkliftControllerLocked)
+        {
+            moveInput = forkliftMoveActionReference.action.ReadValue<Vector2>();
 
-        // Rotate the player based on horizontal input.
-        transform.Rotate(0, moveInput.x * forkliftRotationSpeed * Time.deltaTime, 0);
+            // Rotate the player based on horizontal input.
+            transform.Rotate(0, moveInput.x * forkliftRotationSpeed * Time.deltaTime, 0);
 
-        // moveDirection is based on camera direction
-        Vector3 moveDirection = transform.forward * moveInput.y;
+            // moveDirection is based on camera direction
+            Vector3 moveDirection = transform.forward * moveInput.y;
 
-        transform.position += forkliftMoveSpeed * Time.deltaTime * moveDirection;
+            transform.position += forkliftMoveSpeed * Time.deltaTime * moveDirection;
+        }
     }
+
+    public void LockOrUnlockForklift()
+    {
+        forkliftControllerLocked = !forkliftControllerLocked;
+    }
+
     public ref GameObject GetFork() { return ref Fork; }
 }

@@ -104,6 +104,7 @@ public class PlayerBehaviourManager : MonoBehaviour
                     break;
             }
         }
+
         if (forkActionReference.action.IsPressed() && currentState == PlayerState.DrivingForklift)
         {
             bool keyPressed = forkActionReference.action.ReadValue<float>() > 0;
